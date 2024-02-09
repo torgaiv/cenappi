@@ -1,0 +1,75 @@
+﻿@page "/Ingredient_Create/{id?}"
+@using Cenappi.Cenappi_Data_Access.Model
+@using Cenappi.Cenappi_Services
+@using Syncfusion.Blazor.Notifications
+@rendermode InteractiveServer
+
+@inject NavigationManager navigationManager
+
+<h3>Crear/Editar Ingrediente</h3>
+
+@if (Ingredient != null)
+{
+    <form>
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" class="form-control" id="name" @bind="Ingredient.Name" />
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción:</label>
+            <input type="text" class="form-control" id="description" @bind="Ingredient.Description" />
+        </div>
+        <div class="form-group">
+        <button type="button" class="btn btn-primary" @onclick="SaveIngredient">Guardar</button>
+        </div>
+        
+    </form>
+}
+else
+{
+    <p>Cargando datos...</p>
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private Ingredient? Ingredient { get; set; }
+    private IngredientService service;
+    SfToast ToastObj;
+    private string ToastPosition = "Right";
+    private string ToastContent = "Saved ! ;)";
+     
+    private async Task HideOnClick()
+    {
+        await this.ToastObj.HideAsync("All");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        service =  new IngredientService();
+        if (Id != null)
+        {
+            
+            Ingredient = await service.GetIngredientByIdAsync(Id.GetValueOrDefault());
+        }
+        else
+        {
+            Ingredient = new Ingredient();
+        }
+    }
+
+    
+    private async Task SaveIngredient()
+    {
+        if (Id != null)
+        {
+            var newIngredient =    service.UpdateIngredientAsync(Ingredient);
+        }
+        else
+        {
+            var newIngredient =   service.AddIngredientAsync(Ingredient);
+        }
+        
+        navigationManager.NavigateTo("/Ingredients");
+    }
+}

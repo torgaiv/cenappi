@@ -1,0 +1,68 @@
+﻿@using Cenappi.Cenappi_Data_Access.Model
+@using System.Collections.ObjectModel
+@using Cenappi.Cenappi_Services
+@inject NavigationManager NavigationManager
+@page "/Ingredients"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@if (Ingredients == null || Ingredients.Count == 0)
+{
+    <p>No hay ingredientes disponibles.</p>
+}
+else
+{
+    <div class="row mb-3">
+        <div class="col">
+            <button class="btn btn-primary" @onclick="() => NavigateToCreateIngredient(null)">Crear</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th></th> <!-- Columna vacía para el botón -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ingredient in Ingredients)
+                    {
+                        <tr>
+                            <td>@ingredient.Name</td>
+                            <td>@ingredient.Description</td>
+                            <td>
+                                <button class="btn btn-secondary" @onclick="()=>NavigateToCreateIngredient(ingredient.Id.Value)">Crear</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    
+
+    private ObservableCollection<Ingredient>? Ingredients;
+    private IngredientService Service;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Service =  new IngredientService();
+        Ingredients= new ObservableCollection<Ingredient>( await Service.GetAllIngredientsAsync());
+    }
+    
+    private void NavigateToCreateIngredient(int? ingredientId)
+    {
+        NavigationManager.NavigateTo($"/Ingredient_Create/{ingredientId}");
+    }
+    
+    public async Task<ObservableCollection<Ingredient>> GetAllIngredientsAsync()
+    {
+        var ingredients =  await Service.GetAllIngredientsAsync();
+        return new ObservableCollection<Ingredient>(ingredients);
+    }
+}
