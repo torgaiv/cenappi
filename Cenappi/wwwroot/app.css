@@ -49,3 +49,12 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+/* Estilos personalizados */
+.ingredient-card {
+    background-color: #eff6ef;
+    border: 1px solid #acc7e2;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+} 

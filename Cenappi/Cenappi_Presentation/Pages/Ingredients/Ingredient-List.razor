@@ -5,38 +5,50 @@
 @page "/Ingredients"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@if (Ingredients == null || Ingredients.Count == 0)
+
+<div class="row">
+    <div class="col" style="text-align: right;">
+        <button style="min-width: 250px" class="btn btn-primary" @onclick="() => NavigateToCreateIngredient(null)">Crear</button>
+    </div>
+</div>
+
+
+<div class="row ">
+    <div class="col-md-6">
+        <input class="form-control" @bind="@_searchTerm" placeholder="Buscar por nombre...">
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-info" @onclick="() => GetAllIngredientsFilteredAsync()">Buscar</button>
+    </div>
+</div>
+
+@if (_ingredients == null || _ingredients.Count == 0)
 {
     <p>No hay ingredientes disponibles.</p>
 }
 else
 {
-    <div class="row mb-3">
-        <div class="col">
-            <button class="btn btn-primary" @onclick="() => NavigateToCreateIngredient(null)">Crear</button>
-        </div>
-    </div>
     <div class="row">
         <div class="col">
             <table class="table">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th></th> <!-- Columna vacía para el botón -->
-                    </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th></th> <!-- Columna vacía para el botón -->
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var ingredient in Ingredients)
-                    {
-                        <tr>
-                            <td>@ingredient.Name</td>
-                            <td>@ingredient.Description</td>
-                            <td>
-                                <button class="btn btn-secondary" @onclick="()=>NavigateToCreateIngredient(ingredient.Id.Value)">Crear</button>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var ingredient in _ingredients.Where(i => i.Name != null && i.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)))
+                {
+                    <tr>
+                        <td>@ingredient.Name</td>
+                        <td>@ingredient.Description</td>
+                        <td>
+                            <button class="btn btn-secondary" @onclick="() => { if (ingredient.Id != null) NavigateToCreateIngredient(ingredient.Id.GetValueOrDefault()); }">Modificar</button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
@@ -44,25 +56,44 @@ else
 }
 
 @code {
-    
+    private ObservableCollection<Ingredient>? _ingredients;
+    private ObservableCollection<Ingredient>? _allIngredients;
+    private IngredientService _service;
+    private string _searchTerm = "";
 
-    private ObservableCollection<Ingredient>? Ingredients;
-    private IngredientService Service;
-    
     protected override async Task OnInitializedAsync()
     {
-        Service =  new IngredientService();
-        Ingredients= new ObservableCollection<Ingredient>( await Service.GetAllIngredientsAsync());
+        _service = new IngredientService();
+        _allIngredients= new ObservableCollection<Ingredient>(await _service.GetAllIngredientsAsync());
+        _ingredients = new ObservableCollection<Ingredient>(_allIngredients);
+
     }
-    
+
     private void NavigateToCreateIngredient(int? ingredientId)
     {
         NavigationManager.NavigateTo($"/Ingredient_Create/{ingredientId}");
     }
-    
+
+    private async void GetAllIngredientsFilteredAsync()
+    {
+        if (!string.IsNullOrEmpty(this._searchTerm))
+        {
+            _ingredients = new ObservableCollection<Ingredient>(
+                    _allIngredients
+                        .Where(x => x.Name.ToLowerInvariant().Contains(this._searchTerm.ToLowerInvariant()))
+                        .ToList()
+            );
+        }
+        else
+        {
+            _ingredients = new ObservableCollection<Ingredient>(_allIngredients);
+        }
+    }
+
     public async Task<ObservableCollection<Ingredient>> GetAllIngredientsAsync()
     {
-        var ingredients =  await Service.GetAllIngredientsAsync();
+        var ingredients = await _service.GetAllIngredientsAsync();
         return new ObservableCollection<Ingredient>(ingredients);
     }
+
 }

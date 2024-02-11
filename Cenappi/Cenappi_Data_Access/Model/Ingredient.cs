@@ -11,8 +11,7 @@ public class Ingredient : IBaseCenappi
     }
     
     public string? Description { get; set; }
-    public ICollection<Ingredient>? Ingredients { get; set; }
-    public ICollection<Recipe>? Recipes { get; set; }
+    public ICollection<Ingredient>? Ingredients { get; set; } 
     public string? Name { get; set; }
     public int? Id { get; set; }
     public Guid Guid { get; set; }

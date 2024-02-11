@@ -6,13 +6,15 @@ public class Recipe : IBaseCenappi
 {
     public Recipe()
     {
-        Ingredients = new List<Ingredient>();
-        Tags = null;
     }
 
-    public ICollection<Ingredient> Ingredients { get; set; }
-    public ICollection<Category>? Tags { get; set; }
+    public List<Rations?> Rations { get; set; } = new();
+    public List<string>? Tags { get; set; } = new ();
     public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? Preparation { get; set; }
+    public string? Quantity { get; set; }
+    public string? Time { get; set; } 
     public int? Id { get; set; }
     public Guid Guid { get; set; }
 }

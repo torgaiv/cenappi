@@ -1,0 +1,82 @@
+﻿@using Cenappi.Cenappi_Data_Access.Model
+@using System.Collections.ObjectModel
+@using Cenappi.Cenappi_Services
+@inject NavigationManager NavigationManager
+@page "/Recipes"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+
+    <div class="row mb-3">
+        <div class="col">
+            <button class="btn btn-primary" @onclick="() => NavigateToCreaterecipe(null)">Crear</button>
+        </div>
+    </div>
+
+@if (recipes == null || recipes.Count == 0)
+{
+    <p>No hay recipees disponibles.</p>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th> 
+                        <th>Description</th>
+                        <th>Time</th>
+                        <th>Preparation</th>
+                        <th>Quantity</th>
+                        <th>Categorías</th>
+                        <th></th> <!-- Columna vacía para el botón -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var recipe in recipes)
+                    {
+                        <tr>
+                            <td>@recipe.Name</td> 
+                            <td>@recipe.Description</td> 
+                            <td>@recipe.Time</td> 
+                            <td>@recipe.Preparation</td> 
+                            <td>@recipe.Quantity</td> 
+                            <td>@string.Join(", ", recipe.Tags?.Select(t => t.ToString()) ?? Array.Empty<string>())</td>
+
+
+                            <td>
+                                <button class="btn btn-secondary" @onclick="()=>NavigateToCreaterecipe(recipe.Id.Value)">Modificar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    
+
+    private ObservableCollection<Recipe>? recipes;
+    private RecipeService Service;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Service =  new RecipeService();
+        recipes= new ObservableCollection<Recipe>( await Service.GetAllRecipesAsync());
+    }
+    
+    private void NavigateToCreaterecipe(int? recipeId)
+    {
+        NavigationManager.NavigateTo($"/Recipes_Create/{recipeId}");
+    }
+    
+    public async Task<ObservableCollection<Recipe>> GetAllrecipesAsync()
+    {
+        var recipes =  await Service.GetAllRecipesAsync();
+        
+        return new ObservableCollection<Recipe>(recipes);
+    }
+}

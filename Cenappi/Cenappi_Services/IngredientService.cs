@@ -22,6 +22,10 @@ namespace Cenappi.Cenappi_Services
         {
             return await _ctx.Ingredient.ToListAsync();
         }
+        public  List<Ingredient?> GetAllIngredientsSync()
+        {
+            return  _ctx.Ingredient.ToList();
+        }
 
         public async Task<Ingredient?> GetIngredientByIdAsync(int id)
         {

@@ -1,0 +1,163 @@
+﻿@page "/Recipes_Create/{Id:int?}"
+@using Cenappi.Cenappi_Data_Access.Model
+@using Cenappi.Cenappi_Services
+@using System.Collections.ObjectModel
+@inject NavigationManager NavigationManager 
+@rendermode InteractiveServer
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form class="recipe-form" @onsubmit="HandleSubmit">
+            <div class="card">
+                <div class="card-header">
+                    @(IsEditMode ? "Modificar Receta" : "Crear Receta")
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" class="form-control" id="name" @bind="@Recipe.Name"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripción:</label>
+                        <textarea @bind="@Recipe.Description" class="form-control" id="description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preparation">Preparación:</label>
+                        <textarea class="form-control" id="preparation" @bind="@Recipe.Preparation"></textarea>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="time">Tiempo:</label>
+                            <input type="text" class="form-control" style="max-width: 150px" step="time" @bind="@Recipe.Time"/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="quantity">Cantidad:</label>
+                            <input type="text" class="form-control" style="max-width: 150px" id="quantity" @bind="@Recipe.Quantity"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                            <label for="quantity">Cantidad:</label>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr/>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card ingredient-card">
+            <div class="card-header">
+                Ingredientes
+            </div>
+            <div class="card-body">
+
+                @foreach (var ingredient in Recipe.Rations)
+                {
+                    <div class="row">
+                        <div class="col-md-6">@ingredient.Ingredient.Name</div>
+                        <div class="col-md-2">@ingredient.Quantity</div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-close" @onclick="() => RemoveIngredient(ingredient.Ingredient.Id.GetValueOrDefault())"></button>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <br/>
+
+        <div class="ingredient-add d-flex align-items-center">
+            <div class="form-group flex-grow-1 mr-2">
+                <select class="form-control" @bind="_selectedIngredientId">
+                    @foreach (Ingredient? ingredient in _ingredients.Where(x => !Recipe.Rations.Any(y => y.Ingredient == x)).ToList())
+                    {
+                        <option value="@ingredient?.Id">@ingredient?.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mr-2" style="flex-grow: 0;margin-left: 5px; margin-top:-24px">
+                <label for="_selectedQuantity" class="mb-0" style="font-size: 0.75em;">Cantidad:</label>
+                <input type="text" class="form-control" style="max-width: 50px;margin-right: 5px" id="_selectedQuantity" @bind="_selectedQuantity"/>
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="AddIngredient">Añadir</button>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private Recipe? Recipe { get; set; }
+    private bool IsEditMode => Id.HasValue;
+    private RecipeService _recipeService = new();
+    private IngredientService _ingredientService = new();
+    private ObservableCollection<Ingredient?> _ingredients = new();
+    private int _selectedIngredientId = new();
+    private decimal _selectedQuantity = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Recipe = IsEditMode ? await _recipeService.GetRecipeByIdAsync(Id.Value) : new Recipe { Rations = new List<Rations?>() };
+
+        _ingredients = new ObservableCollection<Ingredient?>(await _ingredientService.GetAllIngredientsAsync());
+        _selectedIngredientId = _ingredients.FirstOrDefault()?.Id ?? 0;
+    }
+
+    private void AddIngredient()
+    {
+        if (_selectedIngredientId <= 0)
+            return;
+
+        var selectedIngredient = _ingredients.FirstOrDefault(x => x?.Id == _selectedIngredientId);
+
+        if (Recipe!.Rations.Any(x => x.Ingredient == selectedIngredient))
+        {
+            _selectedIngredientId = 0;
+            return;
+        }
+
+        Recipe.Rations.Add(new Rations { Quantity = _selectedQuantity, Ingredient = selectedIngredient });
+        ResetNewIngredient();
+    }
+
+    private void ResetNewIngredient()
+    {
+        var nextIngredient = _ingredients.FirstOrDefault(x => !Recipe.Rations.Any(y => y.Ingredient == x));
+        _selectedIngredientId = nextIngredient?.Id ?? 0;
+        this._selectedQuantity = 1;
+    }
+
+    private void RemoveIngredient(int ingredientId)
+    {
+        var ingredientToRemove = Recipe.Rations.FirstOrDefault(x => x.Ingredient.Id == ingredientId);
+        if (ingredientToRemove != null)
+        {
+            Recipe.Rations.Remove(ingredientToRemove);
+            this.ResetNewIngredient();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (IsEditMode)
+            await _recipeService.UpdateRecipeAsync(Recipe);
+        else
+            await _recipeService.CreateRecipeAsync(Recipe);
+
+        NavigationManager.NavigateTo("/Recipes");
+    }
+
+}

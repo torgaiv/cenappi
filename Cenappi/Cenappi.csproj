@@ -31,4 +31,9 @@
       <_ContentIncludedByDefault Remove="Cenappi_Presentation\Pages\Ingredients\IngredientView.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Cenappi_Presentation\Pages\Recipes\Recipe-create.razor" />
+      <AdditionalFiles Include="Cenappi_Presentation\Pages\Recipes\Recipe-List.razor" />
+    </ItemGroup>
+
 </Project>
