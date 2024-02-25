@@ -7,7 +7,9 @@ public class Rations : IBaseCenappi
     public string? Name { get; set; }
     public int? Id { get; set; }
     public Guid Guid { get; set; } 
-    public decimal? Quantity { get; set; }
+    public decimal Quantity { get; set; }
     public string? QuantityName { get; set; }
-    public Ingredient Ingredient { get; set; }
+    public virtual Ingredient Ingredient { get; set; }
+    public int  IngredientId { get; set; }
+
 }

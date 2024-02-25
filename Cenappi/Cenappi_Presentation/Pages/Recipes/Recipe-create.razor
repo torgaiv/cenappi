@@ -37,13 +37,25 @@
 
                         <div class="col-md-6">
                             <label for="quantity">Cantidad:</label>
-                            <input type="text" class="form-control" style="max-width: 150px" id="quantity" @bind="@Recipe.Quantity"/>
+                            <input type="text" class="form-control" placeholder="1" style="max-width: 150px" id="quantity" @bind="@Recipe.Quantity"/>
                         </div>
+
+                        <div class="col-md-6">
+                            <label for="quantity">Categoría:</label>
+                            <div class="ingredient-add d-flex align-items-center">
+                                <div class="form-group flex-grow-1 mr-2">
+                                    <select class="form-control" @bind="_selectedCategoryId">
+                                        @foreach (KeyValuePair<int, string> entry in _categories)
+                                        {
+                                            <option value="@entry.Key">@entry.Value</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="form-group">
-                            <label for="quantity">Cantidad:</label>
-                    </div>
 
                 </div>
             </div>
@@ -105,12 +117,14 @@
     private RecipeService _recipeService = new();
     private IngredientService _ingredientService = new();
     private ObservableCollection<Ingredient?> _ingredients = new();
+    private IDictionary<int, string> _categories = CategoriesStatic.Categories;
     private int _selectedIngredientId = new();
-    private decimal _selectedQuantity = new();
+    private int _selectedCategoryId = 0;
+    private decimal _selectedQuantity = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        Recipe = IsEditMode ? await _recipeService.GetRecipeByIdAsync(Id.Value) : new Recipe { Rations = new List<Rations?>() };
+        Recipe = IsEditMode ? _recipeService.GetRecipeById(Id.Value) : new Recipe { Rations = new List<Rations?>() };
 
         _ingredients = new ObservableCollection<Ingredient?>(await _ingredientService.GetAllIngredientsAsync());
         _selectedIngredientId = _ingredients.FirstOrDefault()?.Id ?? 0;
@@ -120,7 +134,7 @@
     {
         if (_selectedIngredientId <= 0)
             return;
-
+        
         var selectedIngredient = _ingredients.FirstOrDefault(x => x?.Id == _selectedIngredientId);
 
         if (Recipe!.Rations.Any(x => x.Ingredient == selectedIngredient))
@@ -155,7 +169,7 @@
         if (IsEditMode)
             await _recipeService.UpdateRecipeAsync(Recipe);
         else
-            await _recipeService.CreateRecipeAsync(Recipe);
+            await _recipeService.AddRecipeAsync(Recipe);
 
         NavigationManager.NavigateTo("/Recipes");
     }

@@ -1,0 +1,14 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=883104CF_002DE976_002D4EED_002DA85E_002D95EA8369A3FF_002Fd_003ACenappi_005FData_005FAccess_002Fd_003AModel_002Ff_003ARecipeTest_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestProjectMapping/=97BBD8DA_002DB74E_002D4DDF_002D85BC_002D85D8ED244E19/@EntryIndexedValue">883104CF-E976-4EED-A85E-95EA8369A3FF</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestTemplateMapping/=NUnit3x/@EntryIndexedValue">db4927dd-2e12-48a7-9a84-2b7e3e31b9c8</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=62273708_002Da362_002D4aed_002Da9c1_002D9f4e084aab27/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Create_Test #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::883104CF-E976-4EED-A85E-95EA8369A3FF::net8.0::Cenappi.Tests.Cenappi_Data_Access.Model.IngredientTest.Create_Test&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::883104CF-E976-4EED-A85E-95EA8369A3FF::net8.0::Cenappi.Tests.Cenappi_Data_Access.Model.IngredientTest.Create_Service_Test&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::883104CF-E976-4EED-A85E-95EA8369A3FF::net8.0::Cenappi.Tests.Cenappi_Data_Access.Model.RecipeTest.Create_Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6c8635ac_002D1365_002D4d89_002Dac95_002D642a20fca005/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\fran_\RiderProjects\Cenappi\Cenappi.Tests" Presentation="&amp;lt;Cenappi.Tests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

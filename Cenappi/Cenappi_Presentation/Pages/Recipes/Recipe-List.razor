@@ -42,9 +42,7 @@ else
                             <td>@recipe.Time</td> 
                             <td>@recipe.Preparation</td> 
                             <td>@recipe.Quantity</td> 
-                            <td>@string.Join(", ", recipe.Tags?.Select(t => t.ToString()) ?? Array.Empty<string>())</td>
-
-
+                            <td>@(CategoriesStatic.Categories.TryGetValue(recipe.CategoryKey, out var category) ? category : " ")</td>
                             <td>
                                 <button class="btn btn-secondary" @onclick="()=>NavigateToCreaterecipe(recipe.Id.Value)">Modificar</button>
                             </td>

@@ -34,13 +34,14 @@ public class RecipeTest
         {
             Name = name,
             Guid = testGuid,
-            Tags =cat,
+            CategoryKey = 1,
             Description = "Description",
             Preparation = "Preparation",
             Quantity = "Quantity",
             Time = "Time"
         };
 
+        
         using (CenappiContext ctx = new CenappiContext())
         {
             recipe = ctx.Recipe.Add(recipe).Entity;

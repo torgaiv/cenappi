@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cenappi", "Cenappi\Cenappi.csproj", "{97BBD8DA-B74E-4DDF-85BC-85D8ED244E19}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cenappi", "Cenappi\Cenappi.csproj", "{97BBD8DA-B74E-4DDF-85BC-85D8ED244E19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cenappi.Tests", "Cenappi.Tests\Cenappi.Tests.csproj", "{883104CF-E976-4EED-A85E-95EA8369A3FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cenappi.Tests", "Cenappi.Tests\Cenappi.Tests.csproj", "{883104CF-E976-4EED-A85E-95EA8369A3FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +21,8 @@ Global
 		{883104CF-E976-4EED-A85E-95EA8369A3FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{883104CF-E976-4EED-A85E-95EA8369A3FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{883104CF-E976-4EED-A85E-95EA8369A3FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
