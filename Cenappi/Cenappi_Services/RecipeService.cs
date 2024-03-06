@@ -39,10 +39,7 @@ namespace Cenappi.Cenappi_Services
                     .ThenInclude(r => r.Ingredient)
                     .FirstOrDefault(r => r.Id == id);
             }
-
-         
-
-
+          
         public async Task AddRecipeAsync(Recipe? Recipe)
         {
             foreach (Rations ration in Recipe.Rations)

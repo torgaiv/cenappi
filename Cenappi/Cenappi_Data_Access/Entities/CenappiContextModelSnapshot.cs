@@ -49,6 +49,36 @@ namespace Cenappi.Entities
                     b.ToTable("Day");
                 });
 
+            modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.DayConfigurator", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<DateTime>("Days")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecipeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeekConfiguratorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WeekConfiguratorId");
+
+                    b.ToTable("DayConfigurator");
+                });
+
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Ingredient", b =>
                 {
                     b.Property<int?>("Id")
@@ -137,6 +167,9 @@ namespace Cenappi.Entities
                     b.Property<string>("Preparation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("QualityCategoryKey")
+                        .HasColumnType("int");
+
                     b.Property<string>("Quantity")
                         .HasColumnType("nvarchar(max)");
 
@@ -193,6 +226,25 @@ namespace Cenappi.Entities
                     b.ToTable("Week");
                 });
 
+            modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.WeekConfigurator", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WeekConfigurator");
+                });
+
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Year", b =>
                 {
                     b.Property<int?>("Id")
@@ -217,6 +269,17 @@ namespace Cenappi.Entities
                     b.HasOne("Cenappi.Cenappi_Data_Access.Model.Week", null)
                         .WithMany("Days")
                         .HasForeignKey("WeekId");
+                });
+
+            modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.DayConfigurator", b =>
+                {
+                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.WeekConfigurator", "WeekConfigurator")
+                        .WithMany("Days")
+                        .HasForeignKey("WeekConfiguratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WeekConfigurator");
                 });
 
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Ingredient", b =>
@@ -271,6 +334,11 @@ namespace Cenappi.Entities
                 });
 
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Week", b =>
+                {
+                    b.Navigation("Days");
+                });
+
+            modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.WeekConfigurator", b =>
                 {
                     b.Navigation("Days");
                 });

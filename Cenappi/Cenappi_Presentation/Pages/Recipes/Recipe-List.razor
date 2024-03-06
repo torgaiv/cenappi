@@ -27,7 +27,7 @@ else
                         <th>Nombre</th> 
                         <th>Description</th>
                         <th>Time</th>
-                        <th>Preparation</th>
+                        <th>Tipo</th>
                         <th>Quantity</th>
                         <th>Categorías</th>
                         <th></th> <!-- Columna vacía para el botón -->
@@ -39,8 +39,8 @@ else
                         <tr>
                             <td>@recipe.Name</td> 
                             <td>@recipe.Description</td> 
-                            <td>@recipe.Time</td> 
-                            <td>@recipe.Preparation</td> 
+                            <td>@recipe.Time</td>                            
+                            <td>@(RecipeTypeStatic.RecipeType.TryGetValue(recipe.QualityCategoryKey, out var type  ) ?type : " ")</td>
                             <td>@recipe.Quantity</td> 
                             <td>@(CategoriesStatic.Categories.TryGetValue(recipe.CategoryKey, out var category) ? category : " ")</td>
                             <td>

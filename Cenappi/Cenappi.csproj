@@ -29,6 +29,7 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Cenappi_Presentation\Pages\Ingredients\IngredientView.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\weekConfigurationCustom.css" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,0 +1,80 @@
+﻿@page "/WeekConfigurator"
+@using Cenappi.Cenappi_Data_Access.Model
+@using Cenappi.Cenappi_Services
+@using Microsoft.EntityFrameworkCore.Diagnostics.Internal
+@using Syncfusion.Blazor.Notifications
+@rendermode InteractiveServer
+
+@inject NavigationManager navigationManager
+
+
+<h3>Crear/Editar Ingrediente</h3>
+
+@if (WeekConfiguration != null && _tableDays != null)
+{
+    <form>
+        <table class="table table-bordered" style="border-spacing: 10px;">
+            <thead class="">
+            <tr>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (int x = 0; x < 5; x++)
+            {
+                <tr>
+                    @for (int y = 0; y < 7; y++)
+                    {
+                        <td>
+                            @{ int position = x + (y * 5); }
+                            <select class="form-control" @bind-value="WeekConfiguration.Days.ToList()[position].RecipeTypeId"
+                                    @onchange="args => UpdateDay(position)"
+                                    @bind-value:event="oninput">
+                                
+                                @foreach (KeyValuePair<int, string> entry in _recipeTypeCategories)
+                                {
+                                    <option value="@entry.Key">@entry.Value</option>
+                                }
+                            </select>
+                        </td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </form>
+}
+else
+{
+    <p>Cargando datos...</p>
+}
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private WeekConfigurator? WeekConfiguration { get; set; }
+    private WeekConfiguratorService service;
+    private IDictionary<int, string> _recipeTypeCategories = RecipeTypeStatic.RecipeType;
+    private List<DayConfigurator> _tableDays;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        service = new WeekConfiguratorService();
+
+        WeekConfiguration = await service.GetWeekConfigurator();
+        this._tableDays = WeekConfiguration?.Days.ToList();
+    }
+
+    private async void UpdateDay(int position)
+    {
+        WeekConfiguration.Days.ToList()[position] =await  service.UpdateDay(WeekConfiguration.Days.ToList()[position]);
+    }
+
+}
