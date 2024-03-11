@@ -58,7 +58,7 @@
                             <label for="quantity">Tipo de receta:</label>
                             <div class="ingredient-add d-flex align-items-center">
                                 <div class="form-group flex-grow-1 mr-2">
-                                    <select class="form-control" @bind="Recipe.QualityCategoryKey">
+                                    <select class="form-control" @bind="Recipe.TypeId">
                                         @foreach (KeyValuePair<int, string> entry in _recipeQualityCategories)
                                         {
                                             <option value="@entry.Key">@entry.Value</option>

@@ -39,10 +39,18 @@ namespace Cenappi.Entities
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WeekId")
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeekId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
 
                     b.HasIndex("WeekId");
 
@@ -152,9 +160,6 @@ namespace Cenappi.Entities
                     b.Property<int>("CategoryKey")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DayId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -167,18 +172,16 @@ namespace Cenappi.Entities
                     b.Property<string>("Preparation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QualityCategoryKey")
-                        .HasColumnType("int");
-
                     b.Property<string>("Quantity")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Time")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("DayId");
+                    b.HasKey("Id");
 
                     b.ToTable("Recipe");
                 });
@@ -210,13 +213,19 @@ namespace Cenappi.Entities
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
+                    b.Property<DateTime>("EndDay")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("YearId")
+                    b.Property<DateTime>("StartingDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("YearId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -259,6 +268,9 @@ namespace Cenappi.Entities
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("YearNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Year");
@@ -266,9 +278,21 @@ namespace Cenappi.Entities
 
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Day", b =>
                 {
-                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.Week", null)
+                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.Week", "Week")
                         .WithMany("Days")
-                        .HasForeignKey("WeekId");
+                        .HasForeignKey("WeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("Week");
                 });
 
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.DayConfigurator", b =>
@@ -304,23 +328,15 @@ namespace Cenappi.Entities
                     b.Navigation("Ingredient");
                 });
 
-            modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Recipe", b =>
-                {
-                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.Day", null)
-                        .WithMany("Meals")
-                        .HasForeignKey("DayId");
-                });
-
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Week", b =>
                 {
-                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.Year", null)
+                    b.HasOne("Cenappi.Cenappi_Data_Access.Model.Year", "Year")
                         .WithMany("Weeks")
-                        .HasForeignKey("YearId");
-                });
+                        .HasForeignKey("YearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Day", b =>
-                {
-                    b.Navigation("Meals");
+                    b.Navigation("Year");
                 });
 
             modelBuilder.Entity("Cenappi.Cenappi_Data_Access.Model.Ingredient", b =>

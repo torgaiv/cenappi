@@ -13,4 +13,5 @@ public class Year :IBaseCenappi
     public string? Name { get; set; }
     public int? Id { get; set; }
     public Guid Guid { get; set; }
+    public int YearNumber { get; set; }
 }

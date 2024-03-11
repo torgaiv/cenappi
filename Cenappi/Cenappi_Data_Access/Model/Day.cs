@@ -6,12 +6,15 @@ public class Day : IBaseCenappi
 {
     public Day()
     {
-        Date = Date.Date;
-        Meals = null;
+        
     }
 
     public DateTime Date { get; set; }
-    public ICollection<Recipe>? Meals { get; set; }
+    public int  RecipeTypeId { get; set; }
+    public int  RecipeId { get; set; }
+    public Recipe Recipe { get; set; }
+    public  Week  Week { get; set; }
+    public  int  WeekId { get; set; }
     public string? Name { get; set; }
     public int? Id { get; set; }
     public Guid Guid { get; set; }

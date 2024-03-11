@@ -1,0 +1,86 @@
+﻿@page "/"
+@using Cenappi.Cenappi_Data_Access.Model
+@using Cenappi.Cenappi_Services
+@using Microsoft.EntityFrameworkCore.Diagnostics.Internal
+@using Syncfusion.Blazor.Notifications
+@using System.Collections.ObjectModel
+@rendermode InteractiveServer
+
+@inject NavigationManager navigationManager
+
+@if (CurrentWeek != null)
+{
+    <form>
+        <table class="table table-bordered" style="border-spacing: 10px;">
+            <thead>
+            <tr>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (int x = 0; x < 5; x++)
+            {
+                <tr>
+                    @for (int y = 0; y < 7; y++)
+                    {
+                        <td style="width: calc(100% / 7); @(y == (int)DateTime.Now.DayOfWeek ? "background-color: #f7f5a2;" : "")">
+
+
+                            @{ int position = x + (y * 5); }
+                            <select class="form-control" @bind-value="CurrentWeek.Days.ToList()[position].RecipeId"
+                                    @onchange="args => UpdateDay(position)"
+                                    @bind-value:event="oninput">
+
+                                @foreach (var entry in recipes.Where(x => x.TypeId == CurrentWeek.Days.ToList()[position].RecipeTypeId))
+                                {
+                                    <option value="@entry.Id">@entry.Name</option>
+                                }
+                            </select>
+                        </td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </form>
+
+}
+else
+{
+    <p>Cargando datos...</p>
+}
+
+@code {
+    [Parameter] public int? Id { get; set; }
+ 
+    private WeekConfiguratorService weekService;
+    private CoreService coreService;
+    private IDictionary<int, string> _recipeTypeCategories = RecipeTypeStatic.RecipeType;
+    private Week CurrentWeek;
+
+    private ObservableCollection<Recipe>? recipes;
+    private RecipeService recipeService;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        recipeService = new RecipeService();
+        coreService = new CoreService();
+        weekService = new WeekConfiguratorService(); 
+        recipes = new ObservableCollection<Recipe>(await recipeService.GetAllRecipesAsync());
+        CurrentWeek = await coreService.GetWeek(DateTime.Now);
+
+    }
+
+    private async void UpdateDay(int position)
+    {
+       
+    }
+
+}

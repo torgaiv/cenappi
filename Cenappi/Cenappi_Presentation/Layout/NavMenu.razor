@@ -3,45 +3,31 @@
         <a class="navbar-brand" href="">Cenappi</a>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
 
 <input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
-
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <i class="fa-solid fa-calendar-check me-3" aria-hidden="true"></i> <strong>Week</strong>
             </NavLink>
         </div>
-
-        
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Ingredients">
-                <span class="bi bi-cursor" aria-hidden="true"></span> Ingredient
+                <i class="fa-solid fa-lemon me-3" aria-hidden="true"></i> <strong>Ingredients</strong>
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Recipes">
-                <span class="bi bi-cursor" aria-hidden="true"></span> Recipes
+                <i class="fa-solid fa-rectangle-list me-3" aria-hidden="true"></i> <strong>Recipes</strong>
             </NavLink>
         </div>
-        
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="WeekConfigurator">
-                <span class="bi bi-cursor" aria-hidden="true"></span> Week Configuration
-            </NavLink>
-        </div>
-
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+                <i class="fa-solid fa-cog me-3" aria-hidden="true"></i> <strong>Settings</strong>
             </NavLink>
         </div>
     </nav>

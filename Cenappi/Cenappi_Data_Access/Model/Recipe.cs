@@ -10,7 +10,7 @@ public class Recipe : IBaseCenappi
 
     public List<Rations?> Rations { get; set; } = new();
     public int CategoryKey { get; set; } 
-    public int QualityCategoryKey { get; set; } 
+    public int TypeId { get; set; } 
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string? Preparation { get; set; }
